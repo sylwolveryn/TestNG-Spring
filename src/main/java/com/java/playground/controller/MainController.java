@@ -12,19 +12,17 @@ import java.util.UUID;
 
 @Controller
 public class MainController {
-
-	public static final String EMAIL = "email";
-	public static final String CREDIT_CARD_INFORMATION = "credit-card-information-";
 	@Autowired
 	Cache cache;
+	private static final String EMAIL = "email";
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView home(@RequestParam(value = "userGuid", required = true) UUID userGuid) {
 		ModelAndView model = new ModelAndView("index");
-		String actualCreditCardInformationWithGUID = CREDIT_CARD_INFORMATION + userGuid.toString();
+		String actualCreditCardInformationKey = "Credit-card-information-" + userGuid.toString();
 
-		model.addObject(EMAIL, cache.get(EMAIL));
-		model.addObject(actualCreditCardInformationWithGUID, cache.get(actualCreditCardInformationWithGUID));
+		model.addObject(EMAIL, cache.get(EMAIL).get().toString());
+		model.addObject(actualCreditCardInformationKey, cache.get(actualCreditCardInformationKey).get());
 
 		return model;
 	}
